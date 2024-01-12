@@ -1,6 +1,6 @@
-# Kirana Stores
+# Kirana Stores Registry
 
-## Pre-requisite:
-1. Mongo
-2. Spring
-3. Java-Maven
+## DataBase: MongoDB
+## Framework: Spring Boot version 3.0.1
+## Build tool used: Maven
+
