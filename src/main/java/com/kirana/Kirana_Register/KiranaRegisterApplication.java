@@ -2,6 +2,7 @@ package com.kirana.Kirana_Register;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * Main class for the Kirana Register application.
  */
 @SpringBootApplication
+@EnableCaching
 public class KiranaRegisterApplication {
 	/**
 	 * Main method to start the Spring Boot application.

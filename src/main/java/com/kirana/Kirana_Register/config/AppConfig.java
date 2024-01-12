@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
  * Enables caching and provides a bean for creating RestTemplate instances.
  */
 @Configuration
-@EnableCaching
 public class AppConfig {
 
     /**

@@ -1,6 +1,7 @@
 package com.kirana.Kirana_Register.appendix;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +36,8 @@ public class ExchangeRateService {
      *
      * @return ExchangeRateResponse containing the exchange rates.
      */
+// check if you can cache this
+    @Cacheable(value = "cache")
     public ExchangeRateResponse getExchangeRates() {
         return restTemplate.getForObject(apiUrl, ExchangeRateResponse.class);
     }

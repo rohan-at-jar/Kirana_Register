@@ -19,9 +19,10 @@ public class ExchangeRates {
      * @param exchangeRateApiUrl The URL to fetch data from.
      * @return A Map containing the API response.
      */
-    @Cacheable(value = "apiExchange",key="#exchangeRateApiUrl") // Cache the result of this method using the specified cache name
+    @Cacheable(value = "cache") // Cache the result of this method using the specified cache name
     public Map<String, Object> getApi(String exchangeRateApiUrl) {
         // Make the API call using RestTemplate
+        System.out.println("entered ");
         Map<String, Object> response = restTemplate.getForObject(exchangeRateApiUrl, Map.class);
         return response;
     }
