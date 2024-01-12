@@ -2,7 +2,6 @@ package com.kirana.Kirana_Register.controller.AuthController;
 
 import com.kirana.Kirana_Register.dto.AuthRequest;
 import com.kirana.Kirana_Register.entities.UserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,15 +15,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @RestController
 public class AuthenticationController {
 
-//    @Autowired
     private final UserInfo userInfo;
 
-//    @Autowired
     private final SignUp signup;
 
     private final JwtService jwtService;
 
-//    @Autowired
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationController(UserInfo userInfo, SignUp signup, JwtService jwtService, AuthenticationManager authenticationManager) {

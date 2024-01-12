@@ -8,26 +8,47 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+/**
+ * Service class for converting currency amounts based on exchange rates.
+ */
 @Service
 public class ConvertCurrencyService {
 
+    /**
+     * The URL of the exchange rate API.
+     */
     @Value("${api.fxratesapi.url}")
     private String exchangeRateApiUrl;
 
+    /**
+     * Instance of ExchangeRates used to retrieve the latest rates from the API.
+     */
     private ExchangeRates exchangeRate;
+
+    /**
+     * RestTemplate for making HTTP requests to the exchange rate API.
+     */
     private final RestTemplate restTemplate;
+
+    /**
+     * Constructor for initializing ConvertCurrencyService with dependencies.
+     *
+     * @param restTemplate RestTemplate for making HTTP requests to the exchange rate API.
+     * @param exchangeRate Instance of ExchangeRates used to retrieve the latest rates from the API.
+     */
     @Autowired
     public ConvertCurrencyService(RestTemplate restTemplate,ExchangeRates exchangeRate) {
         this.exchangeRate = exchangeRate;
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Retrieves the exchange rate for a specified currency from the exchange rate API.
+     *
+     * @param currency The currency code for which the exchange rate is requested.
+     * @return The exchange rate for the specified currency.
+     */
     public double getExchangeRate(String currency) {
-//        // Call the exchange rate API to get the latest rates
-//        Map<String, Double> exchangeRates = restTemplate.getForObject(exchangeRateApiUrl, Map.class);
-//
-//        // Mock method to get exchange rate (replace with actual implementation)
-//        return exchangeRates != null ? exchangeRates.getOrDefault(currency, 1.0) : 1.0;
 
         try {
             // Call the exchange rate API to get the latest rates
@@ -47,6 +68,13 @@ public class ConvertCurrencyService {
         }
     }
 
+    /**
+     * Converts a given amount using a specified exchange rate.
+     *
+     * @param amount      The amount to be converted.
+     * @param exchangeRate The exchange rate to be used for the conversion.
+     * @return The converted amount.
+     */
     public double convertAmount(double amount, double exchangeRate) {
         // Perform currency conversion
         return amount / exchangeRate;

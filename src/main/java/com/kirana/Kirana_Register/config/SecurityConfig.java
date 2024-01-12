@@ -8,27 +8,36 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration class for Spring Security in Kirana Register application.
+ * Configures authentication, authorization, JWT authentication filter, and session management.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    /**
+     * Autowired JWT authentication filter.
+     */
     @Autowired
     private JwtAuthFilter authFilter;
 
+    /**
+     * Bean for configuring user details service.
+     *
+     * @return UserDetailsService implementation.
+     */
     @Bean
     //authentication
     public UserDetailsService userDetailsService() {
@@ -36,6 +45,13 @@ public class SecurityConfig {
         return new UserInfoUserDetailsService();
     }
 
+    /**
+     * Configures the security filter chain.
+     *
+     * @param http HttpSecurity instance to configure.
+     * @return SecurityFilterChain instance.
+     * @throws Exception If configuration encounters an exception.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
@@ -52,11 +68,21 @@ public class SecurityConfig {
                 .build();
     }
 
+    /**
+     * Bean for configuring password encoder.
+     *
+     * @return PasswordEncoder instance.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Bean for configuring authentication provider.
+     *
+     * @return AuthenticationProvider instance.
+     */
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
@@ -64,6 +90,14 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
+    /**
+     * Bean for configuring AuthenticationManager.
+     *
+     * @param config AuthenticationConfiguration instance.
+     * @return AuthenticationManager instance.
+     * @throws Exception If configuration encounters an exception.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
