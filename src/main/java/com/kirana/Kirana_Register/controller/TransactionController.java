@@ -11,6 +11,7 @@ import com.kirana.Kirana_Register.services.reportgeneratorservices.DailyReportGe
 import com.kirana.Kirana_Register.services.reportgeneratorservices.MonthlyReportGenerator;
 import com.kirana.Kirana_Register.services.reportgeneratorservices.WeeklyReportGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,13 +21,13 @@ import java.util.List;
 @RestController
 public class TransactionController {
 
-    private final TransactionRepository transactionRepository;
+    private final  TransactionRepository transactionRepository;
     private final ConvertCurrencyService currencyconversionservice;
     private final DailyReportGenerator drg;
     private final WeeklyReportGenerator wrg;
     private final MonthlyReportGenerator mrg;
 
-    @Autowired
+//    @Autowired
     TransactionController(TransactionRepository transactionRepository, ConvertCurrencyService currencyconversionservice, DailyReportGenerator drg, WeeklyReportGenerator wrg, MonthlyReportGenerator mrg) {
         this.transactionRepository = transactionRepository;
         this.currencyconversionservice= currencyconversionservice;
@@ -38,6 +39,7 @@ public class TransactionController {
 
 
     @GetMapping("/allTransactions")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
@@ -82,18 +84,18 @@ public class TransactionController {
         return transactionRepository.save(transaction);
     }
 //    Create Endpoints in TransactionController for Reports
-@GetMapping("/daily-report")
-public DailyReport getDailyReport(@RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date timestamp) {
-    return drg.generateDailyReport(timestamp);
-}
-
-    @GetMapping("/weekly-report")
-    public WeeklyReport getWeeklyReport(@RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date timestamp) {
-        return wrg.generateWeeklyReport(timestamp);
-    }
-
-    @GetMapping("/monthly-report")
-    public MonthlyReport getMonthlyReport(@RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date timestamp) {
-        return mrg.generateMonthlyReport(timestamp);
-    }
+//@GetMapping("/daily-report")
+//public DailyReport getDailyReport(@RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date timestamp) {
+//    return drg.generateDailyReport(timestamp);
+//}
+//
+//    @GetMapping("/weekly-report")
+//    public WeeklyReport getWeeklyReport(@RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date timestamp) {
+//        return wrg.generateWeeklyReport(timestamp);
+//    }
+//
+//    @GetMapping("/monthly-report")
+//    public MonthlyReport getMonthlyReport(@RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date timestamp) {
+//        return mrg.generateMonthlyReport(timestamp);
+//    }
 }

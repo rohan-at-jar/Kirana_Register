@@ -1,5 +1,6 @@
 package com.kirana.Kirana_Register.services;
 
+import com.kirana.Kirana_Register.model.ExchangeRates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ public class ConvertCurrencyService {
     @Value("${api.fxratesapi.url}")
     private String exchangeRateApiUrl;
 
+    private ExchangeRates exchangeRate;
     private final RestTemplate restTemplate;
     @Autowired
-    public ConvertCurrencyService(RestTemplate restTemplate) {
+    public ConvertCurrencyService(RestTemplate restTemplate,ExchangeRates exchangeRate) {
+        this.exchangeRate = exchangeRate;
         this.restTemplate = restTemplate;
     }
 
@@ -28,16 +31,14 @@ public class ConvertCurrencyService {
 
         try {
             // Call the exchange rate API to get the latest rates
-            Map<String, Object> response = restTemplate.getForObject(exchangeRateApiUrl, Map.class);
+            Map<String, Object> response = exchangeRate.getApi(exchangeRateApiUrl);
+
 
             if (response != null && response.containsKey("rates")) {
                 Map<String, Double> rates = (Map<String, Double>) response.get("rates");
-//                System.err.println(currency); dead code
-//                System.err.println(rates != null ? rates.getOrDefault(currency, 1.0) : 1.0); dead code
                 return rates != null ? rates.getOrDefault(currency, 1.0) : 1.0;
             } else {
                 System.err.println("Invalid API response format");
-//                System.err.println(response); dead code
                 return 1.0;
             }
         } catch (Exception e) {
