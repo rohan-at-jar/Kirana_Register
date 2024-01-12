@@ -7,6 +7,7 @@ import io.github.bucket4j.grid.jcache.JCacheProxyManager;
 import org.redisson.config.Config;
 import org.redisson.jcache.configuration.RedissonConfiguration;
 import org.redisson.spring.starter.RedissonAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
