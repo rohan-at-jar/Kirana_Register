@@ -7,16 +7,33 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Service class responsible for generating daily reports based on transactions.
+ */
 @Service
 public class DailyReportGenerator {
 
+    /**
+     * Repository for interacting with transaction information stored in the database.
+     */
     private final TransactionRepository transactionRepository;
 
+    /**
+     * Constructor for initializing the DailyReportGenerator service with dependencies.
+     *
+     * @param transactionRepository Repository for interacting with transaction information stored in the database.
+     */
     @Autowired
     public DailyReportGenerator(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
+    /**
+     * Generates a daily report based on transactions that occurred up to a given timestamp.
+     *
+     * @param timestamp The timestamp up to which transactions will be considered for the report.
+     * @return A DailyReport object containing total credit, total debit, and net balance for the specified day.
+     */
     public DailyReport generateDailyReport(Date timestamp) {
         // Calculate one day before the given timestamp
         Date startDate = new Date(timestamp.getTime() - (24 * 60 * 60 * 1000));
@@ -42,12 +59,5 @@ public class DailyReportGenerator {
         double netBalance = totalCredit - totalDebit;
 
         return new DailyReport(totalCredit, totalDebit, netBalance);
-        // Create and return the response as a Map
-//        Map<String, Double> dailyReport = new HashMap<>();
-//        dailyReport.put("totalCredit", totalCredit);
-//        dailyReport.put("totalDebit", totalDebit);
-//        dailyReport.put("netBalance", netBalance);
-//
-//        return dailyReport;
     }
 }

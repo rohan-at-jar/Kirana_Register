@@ -2,16 +2,33 @@ package com.kirana.Kirana_Register.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Data Transfer Object (DTO) representing a transaction request.
+ * Contains details such as 'from', 'to', 'currency', 'amount', and 'type'.
+ */
 public class TransactionRequestDTO {
 
+    /**
+     * Identifier of the source entity in the transaction.
+     */
     @JsonProperty("from")
     private int from;
+
+    /**
+     * Identifier of the target entity in the transaction.
+     */
     @JsonProperty("to")
     private int to;
 
+    /**
+     * Default constructor for TransactionRequestDTO.
+     */
     public TransactionRequestDTO() {
     }
 
+    /**
+     * String representation of TransactionRequestDTO.
+     */
     @Override
     public String toString() {
         return "TransactionRequestDTO{" +
@@ -22,11 +39,20 @@ public class TransactionRequestDTO {
                 ", type='" + type + '\'' +
                 '}';
     }
-
+    /**
+     * Currency code for the transaction.
+     */
     @JsonProperty("Currency")
     private String currency;
+
+    /**
+     * Amount involved in the transaction.
+     */
     @JsonProperty("amount")
     private int amount;
+    /**
+     * Type of the transaction (e.g., credit or debit).
+     */
     @JsonProperty("type")
     private String type;
 

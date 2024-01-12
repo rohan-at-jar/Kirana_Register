@@ -8,16 +8,33 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Service class responsible for generating monthly reports based on transactions.
+ */
 @Service
 public class MonthlyReportGenerator {
 
+    /**
+     * Repository for interacting with transaction information stored in the database.
+     */
     private final TransactionRepository transactionRepository;
 
+    /**
+     * Constructor for initializing the MonthlyReportGenerator service with dependencies.
+     *
+     * @param transactionRepository Repository for interacting with transaction information stored in the database.
+     */
     @Autowired
     public MonthlyReportGenerator(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
+    /**
+     * Generates a monthly report based on transactions that occurred up to a given timestamp.
+     *
+     * @param timestamp The timestamp up to which transactions will be considered for the report.
+     * @return A MonthlyReport object containing total credit, total debit, and net balance for the specified month.
+     */
     public MonthlyReport generateMonthlyReport(Date timestamp) {
         // Calculate one month before the given timestamp
         Calendar calendar = Calendar.getInstance();
@@ -45,13 +62,6 @@ public class MonthlyReportGenerator {
         // Calculate net balance
         double netBalance = totalCredit - totalDebit;
         return new MonthlyReport(totalCredit, totalDebit, netBalance);
-        // Create and return the response as a Map
-//        Map<String, Double> monthlyReport = new HashMap<>();
-//        monthlyReport.put("totalCredit", totalCredit);
-//        monthlyReport.put("totalDebit", totalDebit);
-//        monthlyReport.put("netBalance", netBalance);
-//
-//        return monthlyReport;
 
     }
 }

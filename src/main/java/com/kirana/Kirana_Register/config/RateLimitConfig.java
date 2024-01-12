@@ -11,20 +11,27 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Duration;
 import java.util.function.Supplier;
 
+/**
+ * Configuration class for rate limiting in Kirana Register application.
+ * Configures rate limits using Bucket4j and provides a ProxyManager for distributed rate limiting.
+ */
 @Configuration
 public class RateLimitConfig {
     //autowiring dependencies
-
+    /**
+     * Autowired dependency for ProxyManager.
+     */
     @Autowired
     public ProxyManager buckets;
 
     /**
-     * @param key
-     * In a production env, the resolveBucket function takes in the key param as an authentication
-     * token(say). Then the relevant user details can be extracted from that token to fetch the
-     * corresponding rate limit details for that particular user from the DB and subsequently
-     * process the request according to those details.
-     * */
+     * Resolves or creates a Bucket for rate limiting based on the provided key.
+     * In a production environment, this function can use the key (e.g., authentication token)
+     * to fetch user-specific rate limit details from the database and configure the Bucket accordingly.
+     *
+     * @param key The key used to identify the user or entity for rate limiting.
+     * @return The resolved or created Bucket for rate limiting.
+     */
     public Bucket resolveBucket(String key) {
         Supplier<BucketConfiguration> configSupplier = getConfigSupplierForUser(key);
 
@@ -32,12 +39,18 @@ public class RateLimitConfig {
         return buckets.builder().build(key, configSupplier);
     }
 
+    /**
+     * Provides a Supplier for BucketConfiguration based on the user's rate limit details.
+     * In this example, a simple configuration with a refill of 2 tokens every 10 seconds and
+     * a total limit of 5 tokens is used.
+     *
+     * @param key The key used to identify the user or entity for rate limiting.
+     * @return Supplier for BucketConfiguration.
+     */
     private Supplier<BucketConfiguration> getConfigSupplierForUser(String key) {
-        //User user = userRepository.findById(userId);
         Refill refill = Refill.intervally(2, Duration.ofSeconds(10));
         //create 10 token bandwidth
         Bandwidth limit = Bandwidth.classic(5, refill);
-
         // Bandwidth limit = Bandwidth.
 
         return () -> (BucketConfiguration.builder()
